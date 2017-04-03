@@ -1,10 +1,11 @@
-![deploying-docker-compose](docker-compose.png)
+![deploying-docker-compose](rsc/docker-compose.png)
 
 ## Advance use of Docker-Compose
 
 With this example you will have some *JAVA* rest services running on Docker using a *Postgres* database deployed over a *Tomcat* server in three separate containers, all deployed thanks to Docker-Compose.
 
-#### WEB Container Java & Tomcat
+![deploying-docker-compose-tomcat](rsc/tomcat.jpg)
+#### Webapp Container: Java & Tomcat
 
 To build each container on their folders we use *build* tag. First folder to search a Dockerfile and build it will be 'server', in that Dockerfile we are going to pull an image with Tomcat and Java JDK ready.
 
@@ -29,8 +30,8 @@ Finally it will build *db* and *smtp* containers.
      - db
      - smtp
 ```
-
-#### Database Container Postgres
+![deploying-docker-compose-tomcat](rsc/postgresql.jpg)
+#### Database Container: PostgreSQL
 
 For the database container we include emailboot.sql initial script.
 
@@ -64,8 +65,8 @@ db:
       - POSTGRES_USER=testusr
       - POSTGRES_PASSWORD=testpwd
 ```
-      
-#### SMTP Container 
+![deploying-docker-compose-tomcat](rsc/smtp.jpg)      
+#### SMTP Container: Postfix 
 
 Finally we add a simple Postfix SMTP TLS relay docker image with no local authentication enabled (to be run in a secure LAN). To setup properties and ports we are going to use Docker-Compose as is follows:
 
@@ -85,7 +86,7 @@ Original Image: [SMTP Postfix](https://registry.hub.docker.com/u/juanluisbaptist
 
 #### Testing REST services
 
-##### Initial test service
+#### Initial test service
 
 Once the docker-compose up command is finished you can test the webapp by accessing:
 ```sh
@@ -97,7 +98,7 @@ If it was deployed correctly the output should be like this:
 EmailBoot Rest Service - Test Succeeded! 
 ```
 
-##### Send and email
+#### Send an email
 
 Once the docker-compose up command is finished you can test the webapp by accessing:
 ```sh
@@ -129,7 +130,7 @@ If the request was process correctly the output should be like this:
 } 
 ```
 
-##### List of emails logged
+#### List of emails logged
 
 Another REST service include in the JAVA app is list all delivered emails
 ```sh
