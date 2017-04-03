@@ -1,0 +1,28 @@
+webapp:
+  build: server
+  ports:
+    - "8080:8080"
+  links:
+    - database
+    - smtp
+
+database:
+  build: database
+  restart: always
+  ports:
+      - "5432:5432"
+  environment:
+      - DEBUG=true
+      - POSTGRES_USER=testusr
+      - POSTGRES_PASSWORD=testpwd
+
+smtp:
+  build: smtp
+  ports:
+    - "25:25"
+  environment:
+    - maildomain=mailboot.net
+    - smtp_user=user:pwd
+    - messageSizeLimit=40960000
+    - mailboxSizeLimit=40960000
+

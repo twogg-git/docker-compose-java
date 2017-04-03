@@ -1,0 +1,26 @@
+<html>
+<head>
+    <meta charset="charset=UTF-8">
+    <title>Mail Boot Test</title>
+</head>
+
+<body>
+<table align="center" width="700" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+    <tr>
+        <td padding-top:20px; >$content</td>
+    </tr>
+    <tr>
+        <td style="padding-bottom:0px; color:#666; padding-top:20px; line-height:6px; font-size:13px; text-align:left; font-family:Segoe, 'Segoe UI', 'DejaVu Sans', 'Trebuchet MS', Verdana, sans-serif">It's Alive!!! ¯\_(ツ)_/¯.</td>
+    </tr>
+    <tr>
+        <td><table width="700" height="5" border="0" cellspacing="0" cellpadding="0" align="right" style="margin-top:15px">
+            <tr align="right">
+                <td width="200" height="5" bgcolor="#97989c"></td>
+            </tr>
+        </table></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

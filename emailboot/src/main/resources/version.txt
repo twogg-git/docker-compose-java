@@ -1,0 +1,5 @@
+{
+"version":"${pom.version}",
+"build_date":"${timestamp}",
+"revision":"${build.number}"
+}
