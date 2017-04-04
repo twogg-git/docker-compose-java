@@ -90,7 +90,7 @@ Original Image: [SMTP Postfix](https://registry.hub.docker.com/u/juanluisbaptist
 
 Once the docker-compose up command is finished you can test the webapp by accessing:
 ```sh
-http://localhost:8080/test
+http://localhost:8081/test
   ```
 
 If it was deployed correctly the output should be like this:
