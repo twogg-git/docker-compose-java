@@ -1,7 +1,7 @@
 webapp:
   build: server
   ports:
-    - "8080:8080"
+    - "8081:8080"
   links:
     - database
     - smtp
@@ -13,8 +13,9 @@ database:
       - "5432:5432"
   environment:
       - DEBUG=true
-      - POSTGRES_USER=testusr
-      - POSTGRES_PASSWORD=testpwd
+      - POSTGRES_USER=emailboot
+      - POSTGRES_PASSWORD=emailboot
+
 
 smtp:
   build: smtp
