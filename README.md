@@ -25,7 +25,7 @@ Finally it will build *db* and *smtp* containers.
  web:
    build: server
    ports:
-     - "8080:8080"
+     - "8081:8080"
    links:
      - db
      - smtp
@@ -43,7 +43,7 @@ CREATE TABLE email_logger (
   log_content       VARCHAR(2500)               NOT NULL,
   log_timestamp     TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT current_timestamp
 ) WITH (OIDS =FALSE);
-ALTER TABLE email_logger OWNER TO testusr;
+ALTER TABLE email_logger OWNER TO emailboot;
 ```
 
 It will we run on Postgres start thanks to this command in the Dockerfile.
@@ -59,7 +59,7 @@ db:
   build: database
   restart: always
   ports:
-      - "5432:5432"
+      - "5433:5432"
   environment:
       - DEBUG=true
       - POSTGRES_USER=testusr
@@ -74,7 +74,7 @@ Finally we add a simple Postfix SMTP TLS relay docker image with no local authen
 smtp:
   build: smtp
   ports:
-    - "25:25"
+    - "26:25"
   environment:
     - maildomain=mailboot.net
     - smtp_user=user:pwd
@@ -103,7 +103,7 @@ EmailBoot Rest Service - Test Succeeded!
 Once the docker-compose up command is finished you can test the webapp by accessing:
 ```sh
 POST rest service
-    http://localhost:8080/v1/emails
+    http://localhost:8081/v1/emails
 
 Parameters
     "subject" Suject of the email, it will be used on email inbox. Example: Hello I'm here!
@@ -116,7 +116,7 @@ If the request was process correctly the output should be like this:
 {
   "code": 202,
   "status": "ACCEPTED",
-  "url": "[POST] http://localhost:8080/emailboot/v1/emails?subject=Subject%20test&content=Testing%20content%20on%20email&recipients=mail@mail.com;",
+  "url": "[POST] http://localhost:8081/v1/emails?subject=Subject%20test&content=Testing%20content%20on%20email&recipients=mail@mail.com;",
   "message": "Email task was accepted and sent to SMTP",
   "data": {
     "id": 1491218659389,
@@ -135,7 +135,7 @@ If the request was process correctly the output should be like this:
 Another REST service include in the JAVA app is list all delivered emails
 ```sh
 GET rest service
-    http://localhost:8080/emailboot/v1/logger?startDate=&endDate=2017-12-01 00:00&onlyDelivered=false
+    http://localhost:8081/v1/logger?startDate=&endDate=2017-12-01 00:00&onlyDelivered=false
 
 Parameters
     "startDate" Initial date to search. Example: 2017-01-01 00:00
@@ -149,7 +149,7 @@ This is the expected output:
 {
   "code": 200,
   "status": "OK",
-  "url": "[GET] http://localhost:8080/emailboot/v1/logger?startDate=2017-01-01%2000:00&endDate=2017-12-01%2000:00&onlyDelivered=false",
+  "url": "[GET] http://localhost:8081/v1/logger?startDate=2017-01-01%2000:00&endDate=2017-12-01%2000:00&onlyDelivered=false",
   "message": "EmailBoot request response.",
   "data": [
     {

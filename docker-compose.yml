@@ -10,7 +10,7 @@ database:
   build: database
   restart: always
   ports:
-      - "5432:5432"
+      - "5433:5432"
   environment:
       - DEBUG=true
       - POSTGRES_USER=emailboot
@@ -20,7 +20,7 @@ database:
 smtp:
   build: smtp
   ports:
-    - "25:25"
+    - "26:25"
   environment:
     - maildomain=mailboot.net
     - smtp_user=user:pwd
