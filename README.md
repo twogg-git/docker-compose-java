@@ -2,7 +2,7 @@
 
 ## Advance use of Docker-Compose
 
-With this example you will have some *JAVA* rest services running on Docker using a *Postgres* database deployed over a *Tomcat* server in three separate containers, all deployed thanks to Docker-Compose.
+This Docker-Compose example will let you send emails thanks to a REST service provided by a *JAVA* web application running over a *Tomcat* server and logging the emails sent on a *Postgres* database. All three containers deployed separately thanks to Docker-Compose. 
 
 ![deploying-docker-compose-tomcat](rsc/tomcat.jpg)
 #### Webapp Container: Java & Tomcat
@@ -31,7 +31,7 @@ Finally it will build *db* and *smtp* containers.
      - smtp
 ```
 ![deploying-docker-compose-tomcat](rsc/postgresql.jpg)
-#### Database Container: PostgreSQL
+#### Database Container: Postgres
 
 For the database container we include emailboot.sql initial script.
 
