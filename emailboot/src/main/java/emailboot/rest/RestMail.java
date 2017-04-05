@@ -6,9 +6,16 @@ import emailboot.rest.response.DataLog;
 import emailboot.rest.response.StatusEnum;
 import emailboot.util.EmailProperties;
 import emailboot.util.SMTPProperties;
-import emailboot.util.exception.BusinessExceptionEnum;
 import emailboot.util.validator.EmailFields;
-import org.apache.velocity.VelocityContext;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +23,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.web.bind.annotation.*;
-
-import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.QueryParam;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/v1")
@@ -54,7 +50,6 @@ public class RestMail {
         DataLog response = new DataLog(new Date().getTime(), request.getRemoteAddr());
         List<String> mailingList = new ArrayList<>();
 
-        String pathd ="";
         try {
 
             //Validate mandatory fields
@@ -96,9 +91,6 @@ public class RestMail {
             VelocityEngine velocityEngine = new VelocityEngine();
             velocityEngine.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,"org.apache.velocity.runtime.log.Log4JLogChute");
             velocityEngine.setProperty("runtime.log.logsystem.log4j.logger","com.mindtree.igg.website.email.TemplateMergeUtilVelocityImpl");
-
-             pathd = VelocityEngine.FILE_RESOURCE_LOADER_PATH+ emailProperties.getVelocityTemplatePath();
-
             velocityEngine.addProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, emailProperties.getVelocityTemplatePath());
             velocityEngine.init();
 
@@ -124,14 +116,14 @@ public class RestMail {
             emailDraft.setContent(VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, emailProperties.getVelocityTemplate(), "UTF-8", mailProperties), "text/html; charset=utf-8");
 
             Transport.send(emailDraft);
-            loggerService.addEmailLog(subject, true, "Email build and send to SMTP");
+            loggerService.addEmailLog(response.getSerial(), subject, true, "Email build and send to SMTP");
             logger.log(Level.INFO, StatusEnum.NOTIFICATION_ACCEPTED.getStatus() + response.toString());
             return BuildResponse.status(HttpStatus.ACCEPTED, BuildResponse.buildURL(request), StatusEnum.NOTIFICATION_ACCEPTED.getStatus(), response);
 
 
         } catch (Exception ex) {
-            loggerService.addEmailLog(subject, false, ex.getMessage());
-            logger.log(Level.SEVERE, StatusEnum.INTERNAL_SERVER_ERROR.getStatus() + pathd + " Email ID [" + subject + "] " + ex.getMessage(), ex);
+            loggerService.addEmailLog(response.getSerial(), subject, false, ex.getMessage());
+            logger.log(Level.SEVERE, StatusEnum.INTERNAL_SERVER_ERROR.getStatus() + "Email ID [" + response.getSerial() + "] " + ex.getMessage(), ex);
             return BuildResponse.status(HttpStatus.INTERNAL_SERVER_ERROR, BuildResponse.buildURL(request), StatusEnum.INTERNAL_SERVER_ERROR.getStatus(), response);
         }
     }

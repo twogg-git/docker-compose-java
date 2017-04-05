@@ -3,6 +3,10 @@ package emailboot.rest;
 import emailboot.logger.service.LoggerService;
 import emailboot.rest.response.BuildResponse;
 import emailboot.util.exception.BusinessExceptionEnum;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,11 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/v1")
@@ -25,9 +24,14 @@ public class RestLog {
     @Autowired
     private LoggerService loggerService;
 
-    @RequestMapping(value = "/logger/{subject}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<?> getLoggerByMailId(@PathVariable String subject, HttpServletRequest req) {
+    @RequestMapping(value = "/logger/subject/{subject}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<?> getLoggerBySuject(@PathVariable String subject, HttpServletRequest req) {
         return BuildResponse.okStatus(BuildResponse.buildURL(req), loggerService.getEmailBySubject(subject));
+    }
+    
+    @RequestMapping(value = "/logger/serial/{serial}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<?> getLoggerBySerial(@PathVariable String serial, HttpServletRequest req) {
+        return BuildResponse.okStatus(BuildResponse.buildURL(req), loggerService.getEmailBySerial(serial));
     }
 
     @RequestMapping(value = "/logger", method = RequestMethod.GET, produces = "application/json")

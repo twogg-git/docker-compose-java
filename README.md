@@ -36,8 +36,9 @@ Finally it will build *db* and *smtp* containers.
 For the database container we include emailboot.sql initial script.
 
 ```sh
-CREATE TABLE email_logger (
-  log_serial        SERIAL                      NOT NULL,
+CREATE TABLE IF NOT EXISTS email_logger (
+  log_id            SERIAL                      NOT NULL,
+  log_serial        VARCHAR(100)                NOT NULL,
   log_subject       VARCHAR(100)                NOT NULL,
   log_delivered     BOOL                        NOT NULL DEFAULT 'false',
   log_content       VARCHAR(2500)               NOT NULL,
@@ -119,7 +120,7 @@ If the request was process correctly the output should be like this:
   "url": "[POST] http://localhost:8080/v1/emails?subject=Subject%20test&content=Testing%20content%20on%20email&recipients=mail@mail.com;",
   "message": "Email task was accepted and sent to SMTP",
   "data": {
-    "id": 1491218659389,
+    "serial": 1491218659389,
     "from": "127.0.0.1",
     "mailsList": "test@mail.com;",
     "subject": "Subject test",
@@ -153,10 +154,59 @@ This is the expected output:
   "message": "EmailBoot request response.",
   "data": [
     {
+      "serial": "1491359400489",
       "subject": "Hello EmailBoot",
       "delivered": true,
       "content": "Working as a charm!",
       "versionDate": "04/03/2017 05:08:51"
+    }
+  ]
+}
+```
+
+#### List of emails logged by Serial or Subject
+
+Search REST services included: By Serial or Subject. Filter by subject will return all the emails that contains the keywords sent.
+ 
+```sh
+GET rest services
+    http://localhost:8080/v1/logger/suject/Docker Test
+    http://localhost:8080/v1/logger/serial/1491359396709
+
+Parameters
+    "subject" Text to filter by. Example: Docker Test
+    "serial" Generated id to filter by. Example: 1491359396709
+  ```
+
+This is the expected output:
+
+```sh
+{
+  "code": 200,
+  "status": "OK",
+  "url": "[GET] http://localhost:8080/v1/logger/subject/Docker%20Test",
+  "message": "EmailBoot request response.",
+  "data": [
+    {
+      "serial": "1491359396709",
+      "subject": "Docker Test",
+      "delivered": true,
+      "content": "Email build and send to SMTP",
+      "versionDate": "04/05/2017 02:29:56"
+    },
+    {
+      "serial": "1491359400486",
+      "subject": "Docker Test 1",
+      "delivered": true,
+      "content": "Email build and send to SMTP",
+      "versionDate": "04/05/2017 02:30:00"
+    },
+    {
+      "serial": "1491359403198",
+      "subject": "Docker Test 2",
+      "delivered": true,
+      "content": "Email build and send to SMTP",
+      "versionDate": "04/05/2017 02:30:03"
     }
   ]
 }

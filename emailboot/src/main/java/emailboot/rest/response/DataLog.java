@@ -1,13 +1,12 @@
 package emailboot.rest.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataLog {
 
-    private long id;
+    private String serial;
     private String from;
     private String mailsList;
     private String subject;
@@ -15,17 +14,22 @@ public class DataLog {
     private List<String> warnings;
     private List<String> malformedDirectEmails;
 
-    public DataLog(long id, String from) {
+    public DataLog(long serial, String from) {
         this.from = from;
-        this.id = id;
+        this.serial = String.valueOf(serial);
+    }
+    
+    public DataLog(String serial, String from) {
+        this.from = from;
+        this.serial = serial;
     }
 
-    public long getId() {
-        return id;
+    public String getSerial() {
+        return serial;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setSerial(String serial) {
+        this.serial = serial;
     }
 
     public String getFrom() {
@@ -84,7 +88,7 @@ public class DataLog {
     @Override
     public String toString() {
         return "{" +
-                "id=" + id +
+                "serial=" + serial +
                 ", from='" + from + '\'' +
                 ", mailsList='" + mailsList + '\'' +
                 ", subject='" + subject + '\'' +

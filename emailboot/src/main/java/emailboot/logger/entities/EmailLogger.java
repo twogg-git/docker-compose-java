@@ -3,10 +3,9 @@ package emailboot.logger.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import emailboot.util.TimestampSerializer;
-
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import javax.persistence.*;
 
 @Entity(name = "EmailLogger")
 @Table(name = "email_logger")
@@ -14,15 +13,20 @@ import java.util.Date;
         @NamedQuery(name = "logger.list_delivered_by_dates", query = "SELECT t FROM EmailLogger t WHERE delivered = true AND t.versionDate BETWEEN :startDate AND :endDate"),
         @NamedQuery(name = "logger.list_all_by_dates", query = "SELECT t FROM EmailLogger t WHERE t.versionDate BETWEEN :startDate AND :endDate"),
         @NamedQuery(name = "logger.find_by_subject", query = "SELECT t FROM EmailLogger t WHERE t.subject like :subject"),
+        @NamedQuery(name = "logger.find_by_serial", query = "SELECT t FROM EmailLogger t WHERE t.serial = :serial"),
 })
 public class EmailLogger {
 
     @Id
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "log_serial", nullable = false, updatable = false)
+    @Column(name = "log_id", nullable = false, updatable = false)
     private Integer id;
 
+    @Basic
+    @Column(name = "log_serial", nullable = false, unique = true, length = 100)
+    private String serial;
+    
     @Basic
     @Column(name = "log_subject", nullable = false, unique = true, length = 100)
     private String subject;
@@ -58,6 +62,14 @@ public class EmailLogger {
         this.id = id;
     }
 
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
+    
     public String getSubject() {
         return subject;
     }
