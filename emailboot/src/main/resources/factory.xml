@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:postgresql://localhost:5432/testusr</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/emailboot</property>
         <property name="connection.driver_class">org.postgresql.Driver</property>
         <mapping class="emailboot.logger.entities.EmailLogger"/>
     </session-factory>
