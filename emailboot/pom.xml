@@ -14,7 +14,7 @@
         <project.source.version>${java.version}</project.source.version>
         <project.target.version>${java.version}</project.target.version>
         <project.encoding>UTF-8</project.encoding>
-        <spring.version>5.2.20.RELEASE</spring.version>
+        <spring.version>6.0.0</spring.version>
         <spring.security.version>4.0.2.RELEASE</spring.security.version>
         <hibernate.version>4.3.1.Final</hibernate.version>
     </properties>
